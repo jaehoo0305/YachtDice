@@ -17,7 +17,7 @@ body {
   align-items: center;
   min-height: 100vh;
   background-color: #000000;  
-  background-image: url("images/DiceBackground.jpg");
+  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("images/DiceBackground.jpg");
   background-size: cover;
 }
 
