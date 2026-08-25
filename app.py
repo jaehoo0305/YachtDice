@@ -1,5 +1,5 @@
 import random
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify, request
 from pymongo import MongoClient
 
 app = Flask(__name__)
@@ -13,16 +13,22 @@ def home():
 
 @app.route('/api/roll', methods=['post'])
 def roll_dice():
-    dicelist = [random.randint(1, 6)for i in range(5)]
-
-    return jsonify({
-        'result': 'success',
-        'dicelist': [{'val':dicelist[0], 'hold':False},
-                     {'val':dicelist[1], 'hold':False},
-                     {'val':dicelist[2], 'hold':False},
-                     {'val':dicelist[3], 'hold':False},
-                     {'val':dicelist[4], 'hold':False}]
-    })
+    holdval = request.get_json()
+    getdice = holdval.get('dicelist', [])
+    new_dicelist = []
+    
+    for i in range(5):
+        if i < len(getdice) and getdice[i].get('hold') == True:
+            new_dicelist.append({
+                'val': getdice[i].get('val'),
+                'hold': True
+                })
+        else:
+            new_dicelist.append({
+                'val': random.randint(1, 6),
+                'hold': False
+                })
+    return jsonify({'result': 'success', 'dicelist': new_dicelist})
 
 # async function rollDice() {
 #   const res = await fetch('/api/roll', { method: 'POST' });
