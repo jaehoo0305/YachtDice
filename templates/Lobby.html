@@ -11,9 +11,9 @@
     <div class="auth-section">
       <h2>로그인</h2><br>
       <form class="auth-form">
-        <input type="text" class="input-field" placeholder="이름">
-        <input type="password" class="input-field" placeholder="비밀번호">
-        <button type="button" class="btn-sign">시작</button>
+        <input id="userId" type="text" class="input-field" placeholder="이름">
+        <input id="userPassword" type="password" class="input-field" placeholder="비밀번호">
+        <button id="goBtn" type="button" class="btn-sign">시작</button>
       </form>
     </div>
 
@@ -22,13 +22,14 @@
     <div class="auth-section">
       <h2>회원가입</h2><br>
       <form class="auth-form">
-        <input type="text" class="input-field" placeholder="이름">
-        <input type="password" class="input-field" placeholder="비밀번호">
-        <input type="password" class="input-field" placeholder="비밀번호 확인">
-        <button type="button" class="btn-sign">등록</button>
+        <input id="newUserId" type="text" class="input-field" placeholder="이름">
+        <input id="newUserPassword" type="password" class="input-field" placeholder="비밀번호">
+        <input id="confirmPassword" type="password" class="input-field" placeholder="비밀번호 확인">
+        <button id="signUpBtn" type="button" class="btn-sign">등록</button>
       </form>
     </div>
   </div>
 
+  <script src="{{ url_for('static', filename='js/auth.js') }}"></script>
 </body>
 </html> 
