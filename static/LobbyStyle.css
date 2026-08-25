@@ -21,10 +21,62 @@ body {
   background-size: cover;
 }
 
-.mainBox {
-  width: 300px;
-  padding: 20px;
+.mainBox { 
+  display: flex;
   background-color: #D9D9D9;
-  text-align: center;
   border-radius: 30px;
+  padding: 40px 32px;
+  width: 720px;
+  max-width: 90%;
+  gap: 24px;
+}
+
+.auth-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.auth-form {
+  width: 100%;
+  flex: 1; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.input-field {
+  width: 90%;
+  padding: 8px 13px;
+  border: none;
+  border-radius: 9999px;
+  background-color: #B5B5B5;
+  font-size: 20px;
+  color: #7C7C7C;
+  outline: none;
+}
+
+.btn-sign {
+  width: 30%;
+  padding: 3px;
+  border: none;
+  border-radius: 9999px;
+  margin-top: auto;
+  background-color: #638FFF;
+  font-size: 20px;
+  color: #FFFFFF;
+  outline: none;
+  cursor: pointer;
+  &:hover {
+    background-color: #4A6ED1;
+    transform: scale(1.025);
+  }
+}
+
+.divider {
+  width: 2px;
+  background-color: #638FFF;
+  border-radius: 2px;
 }

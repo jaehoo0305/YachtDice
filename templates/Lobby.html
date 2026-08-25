@@ -6,9 +6,29 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='LobbyStyle.css') }}">
 </head>
 <body>
+
   <div class="mainBox">
-    <h2>로그인</h2>
+    <div class="auth-section">
+      <h2>로그인</h2><br>
+      <form class="auth-form">
+        <input type="text" class="input-field" placeholder="이름">
+        <input type="password" class="input-field" placeholder="비밀번호">
+        <button type="button" class="btn-sign">시작</button>
+      </form>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="auth-section">
+      <h2>회원가입</h2><br>
+      <form class="auth-form">
+        <input type="text" class="input-field" placeholder="이름">
+        <input type="password" class="input-field" placeholder="비밀번호">
+        <input type="password" class="input-field" placeholder="비밀번호 확인">
+        <button type="button" class="btn-sign">등록</button>
+      </form>
+    </div>
   </div>
-    
+
 </body>
 </html> 
