@@ -1,0 +1,14 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.mainBox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 200px;
+  padding: auto;
+  color: #d9d9d9;
+}
