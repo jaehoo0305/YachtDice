@@ -73,6 +73,10 @@ body {
     background-color: #4A6ED1;
     transform: scale(1.025);
   }
+  &:active {
+    background-color: #4ad16e;
+    transform: scale(0.975);
+  }
 }
 
 .divider {
