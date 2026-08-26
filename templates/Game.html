@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yacht Dice</title>
+    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='LobbyStyle.css') }}"> -->
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .mainBox-ingame {
+            background-color: #959595;
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+
+            width: 100vw;
+            height: 100vh;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .roll-button {
+            width: 30%;
+            padding: 3px;
+            border: none;
+            border-radius: 9999px;
+            margin-top: auto;
+            background-color: #638FFF;
+            font-size: 20px;
+            color: #FFFFFF;
+            outline: none;
+            cursor: pointer;
+
+            &:hover {
+                background-color: #4A6ED1;
+                transform: scale(1.025);
+            }
+
+            &:active {
+                background-color: #4ad16e;
+                transform: scale(0.975);
+            }
+        }
+
+        .subbox {
+            width: 1000px;
+            height: 600px;
+        }
+
+        .hole-button {
+            background-color: #638FFF;
+            color: #09000c;
+            border: 0;
+            padding: 6px 12px;
+            border-radius: 9999px;
+            cursor: pointer;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        .hole-button.active {
+            background-color: #FF6363;
+            color: #09000c;
+            border-color: #a53c3c;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body class="mainBox-ingame">
+    <div class="subbox">
+        <div>
+            <h1>Yacht Dice</h1>
+            <button type="button" class="roll-button" onclick="rollDice()">주사위 굴리기</button>
+        </div>
+
+        <div>
+            <button type="button" class="hole-button" onclick="hold(1)">홀드</button>
+            <h3>주사위 결과 1: <span id="dice-result1">0</span></h3>
+            <button type="button" class="hole-button" onclick="hold(2)">홀드</button>
+            <h3>주사위 결과 2: <span id="dice-result2">0</span></h3>
+            <button type="button" class="hole-button" onclick="hold(3)">홀드</button>
+            <h3>주사위 결과 3: <span id="dice-result3">0</span></h3>
+            <button type="button" class="hole-button" onclick="hold(4)">홀드</button>
+            <h3>주사위 결과 4: <span id="dice-result4">0</span></h3>
+            <button type="button" class="hole-button" onclick="hold(5)">홀드</button>
+            <h3>주사위 결과 5: <span id="dice-result5">0</span></h3>
+        </div>
+    </div>
+
+    <script>
+        let holdStatus = [false, false, false, false, false];
+
+        function hold(diceIndex) {
+            let index = diceIndex - 1;
+
+            holdStatus[index] = !holdStatus[index];
+
+            const btn = event.target;
+            btn.classList.toggle('active', holdStatus[index]);
+        }
+
+        async function rollDice() {
+            let headersList = {
+                "Accept": "*/*",
+                "User-Agent": "Thunder Client (https://www.thunderclient.com)",
+                "Content-Type": "application/json"
+            };
+
+            let dicelist = [];
+            for (let i = 1; i <= 5; i++) {
+                const element = document.getElementById(`dice-result${i}`);
+                if (element) {
+                    dicelist.push({
+                        "val": element.innerText,
+                        "hold": holdStatus[i - 1]
+                    });
+                }
+            }
+
+            let bodyContent = JSON.stringify({
+                "dicelist": dicelist
+            });
+
+            let response = await fetch("http://localhost:5000/api/roll", {
+                method: "POST",
+                body: bodyContent,
+                headers: headersList
+            });
+
+            let data = await response.json();
+            console.log(data);
+
+            for (let i = 0; i < 5; i++) {
+                document.getElementById(`dice-result${i + 1}`).innerText = data.dicelist[i].val;
+            }
+        }
+    </script>
+</body>
+
+</html>
