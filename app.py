@@ -61,7 +61,7 @@ def login():
 
     payload = {
         'userId': user_id,
-        'exp': datetime.datetime.now() + datetime.timedelta(hours=24)
+        'exp': datetime.datetime.now() + datetime.timedelta(days=7)
     }
 
     token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
@@ -72,6 +72,30 @@ def login():
         'token': token,
         'message': '로그인 성공!'
     })
+
+@app.route('/api/verify', methods=['POST'])
+def verify_token():
+    data = request.get_json()
+    token = data.get('token')
+
+    if not token:
+        return jsonify({'result': 'fail', 'message': '토큰이 없습니다.'})
+
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
+        
+        return jsonify(
+        {
+            'result': 'success',
+            'userId': payload['userId'],
+            'message': '인증 성공'
+        })
+
+    except jwt.ExpiredSignatureError:
+        return jsonify({'result': 'fail', 'message': '토큰이 만료되었습니다.'})
+
+    except jwt.InvalidTokenError:
+        return jsonify({'result': 'fail', 'message': '유효하지 않은 토큰입니다.'})
 
 @app.route('/api/roll', methods=['post'])
 def roll_dice():

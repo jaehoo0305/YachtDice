@@ -2,8 +2,36 @@
 const GoButton = document.getElementById('goBtn');
 const SignUpButton = document.getElementById('signUpBtn');
 
+/* 토큰  */
+const token = localStorage.getItem('userToken');
+console.log('현재 읽어온 토큰 값:', token);
+
 /* 람다식 */
 const pwRegex = /^[a-zA-Z0-9]{4,16}$/;
+
+if (token) 
+{
+    fetch('/api/verify',
+    {
+        method: 'POST',
+        headers: 
+        { 
+            'Content-Type': 'application/json' 
+        },
+        body: JSON.stringify({ token: token })
+    })
+    .then(response => response.json())
+    .then(data => 
+        {
+            if (data.result === 'success') 
+        {
+            window.location.href = '/room';
+        } else 
+        {
+            localStorage.removeItem('userToken');
+        }
+    });
+}
 
 GoButton.addEventListener('click', () => 
 {
