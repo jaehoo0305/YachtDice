@@ -4,34 +4,9 @@ const SignUpButton = document.getElementById('signUpBtn');
 
 /* 토큰  */
 const token = localStorage.getItem('userToken');
-console.log('현재 읽어온 토큰 값:', token);
 
 /* 람다식 */
 const pwRegex = /^[a-zA-Z0-9]{4,16}$/;
-
-if (token) 
-{
-    fetch('/api/verify',
-    {
-        method: 'POST',
-        headers: 
-        { 
-            'Content-Type': 'application/json' 
-        },
-        body: JSON.stringify({ token: token })
-    })
-    .then(response => response.json())
-    .then(data => 
-        {
-            if (data.result === 'success') 
-        {
-            window.location.href = '/room';
-        } else 
-        {
-            localStorage.removeItem('userToken');
-        }
-    });
-}
 
 GoButton.addEventListener('click', () => 
 {
@@ -70,10 +45,8 @@ GoButton.addEventListener('click', () =>
     {
         if (data.result === 'success') 
         {
-            localStorage.setItem('userToken', data.token);
-            
             alert('로그인 성공!');
-            window.location.href = '/room';
+            window.location.href = '/room'; // localStorage.setItem 없이 바로 이동
         } else 
         {
             alert('로그인 실패: ' + data.message);

@@ -1,5 +1,6 @@
 import random, jwt, hashlib, datetime, bcrypt
-from flask import Flask, render_template, jsonify, request
+from functools import wraps
+from flask import Flask, render_template, jsonify, request, redirect, make_response
 from pymongo import MongoClient
 from flask_cors import CORS
 
@@ -10,15 +11,43 @@ db = client['yacht_dice']
 users_collection = db['users']
 CORS(app)
 
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        token = request.cookies.get('userToken')
+
+        if not token:
+            return redirect('/')
+        
+        try:
+            jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
+        except (jwt.ExpiredSignatureError, jwt.InvalidTokenError):
+            resp = make_response(redirect('/'))
+            resp.delete_cookie('userToken')
+            return resp
+        
+        return f(*args, **kwargs)
+    
+    return decorated_function
+
 @app.route('/')
 def home():
+    token = request.cookies.get('userToken')
+    if token:
+        try:
+            jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
+            return redirect('/room')
+        except (jwt.ExpiredSignatureError, jwt.InvalidTokenError):
+            pass
     return render_template('Lobby.html')
 
 @app.route('/room')
+@login_required  # 추가
 def room():
     return render_template('Room.html')
 
 @app.route('/game')
+@login_required  # 추가
 def Game():
     return render_template('Game.html')
 
@@ -66,12 +95,9 @@ def login():
 
     token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
 
-    return jsonify(
-    {
-        'result': 'success',
-        'token': token,
-        'message': '로그인 성공!'
-    })
+    resp = make_response(jsonify({'result': 'success', 'message': '로그인 성공!'}))
+    resp.set_cookie('userToken', token, max_age=60 * 60 * 24 * 7, httponly=True)
+    return resp
 
 @app.route('/api/verify', methods=['POST'])
 def verify_token():
