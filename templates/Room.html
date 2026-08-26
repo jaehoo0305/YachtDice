@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Yacht Dice</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='RoomStyle.css') }}">
+</head>
+<body>
+  <div class="section-left">
+    <button class="profile-btn"> <!-- 프로필, 버튼 -->
+        <div>
+          <img class="profile-image" src="{{ url_for('static', filename='images/Profile.png') }}" alt="Profile">
+          <span id="profileName"></span>
+        </div>
+        <div>
+          <span id="profileWins"></span>승 
+          <span id="profileLosses"></span>패 
+          승률<span id="profileWinRate"></span>%
+        </div>
+    </button>
+
+    <div class="match-box"> <!-- 대전 기록, 박스 - 전적, 버튼 -->
+      <h1>
+        대전 기록
+      </h1>
+      <div id = "recordList" class="record-list"> <!-- 전적 여러개, 스크롤바 클래스도 여기 --> 
+        <!-- 버튼 여러개가 JS로 생성될 곳 -->
+      </div>
+    </div>
+  </div>
+
+  <div class="section-right">
+    <button class="tutorial-btn"> <!-- 튜토리얼, 버튼 -->
+      <h2>
+        튜토리얼
+      </h2>
+    </button>
+
+    <div id="tutorialModal" class="modal-overlay hidden">
+      <div class="modal-wrapper"> <!-- 모달 -->
+        <div class="modal-content">
+          <h1 class="tutorial-title">Yacht 다이스 게임</h1>
+          <h2 class="tutorial-subtitle">총 5개의 주사위 중 원하는 주사위는 고정하고 나머지만 최대 3번까지 굴려, 최적의 족보를 채워나가는 확률과 선택의 주사위 포커 게임입니다.</h2>
+        </div>
+
+        <button type="button" id="closeTutorialBtn" class="modal-close-btn">
+          뒤로가기
+        </button>
+      </div>
+    </div>
+
+    <button class="enter-btn"> <!-- 방 입장, 버튼 -->
+      <h2>
+        입장
+      </h2>
+    </button>
+
+  </div>
+
+  <script src="{{ url_for('static', filename='js/modalProfile.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/modalTutorial.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/modalEnter.js') }}"></script>
+</body>
+</html>
