@@ -54,8 +54,16 @@ body {
   border-radius: 9999px;
   background-color: #B5B5B5;
   font-size: 20px;
-  color: #7C7C7C;
   outline: none;
+
+  input 
+  {
+    color: #000000; /* 예: 선명한 검은색 */
+  }
+  input::placeholder 
+  {
+    color: #7C7C7C; /* 예: 연한 회색 */
+  }
 }
 
 .btn-sign {
@@ -69,11 +77,14 @@ body {
   color: #FFFFFF;
   outline: none;
   cursor: pointer;
-  &:hover {
+
+  &:hover 
+  {
     background-color: #4A6ED1;
     transform: scale(1.025);
   }
-  &:active {
+  &:active
+  {
     box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
     background-color: #4ad16e;
     transform: scale(0.975);
