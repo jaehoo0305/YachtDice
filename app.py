@@ -11,6 +11,10 @@ db = client['yacht_dice']
 users_collection = db['users']
 CORS(app)
 
+def calculate_win_rate(wins, losses):
+    total = wins + losses
+    return round((wins / total) * 100, 1) if total > 0 else 0
+
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
@@ -42,9 +46,24 @@ def home():
     return render_template('Lobby.html')
 
 @app.route('/room')
-@login_required  # 추가
+@login_required
 def room():
-    return render_template('Room.html')
+    token = request.cookies.get('userToken')
+    payload = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
+    user_id = payload['userId']
+    
+    user = users_collection.find_one({'userId': user_id})
+    wins = user.get('wins', 0)
+    losses = user.get('losses', 0)
+    
+    total_games = wins + losses
+    win_rate = round((wins / total_games) * 100, 1) if total_games > 0 else 0
+
+    return render_template('Room.html', 
+                           username=user_id, 
+                           wins=wins, 
+                           losses=losses, 
+                           win_rate=win_rate)
 
 @app.route('/game')
 @login_required  # 추가
@@ -65,7 +84,13 @@ def register():
         return jsonify({'result': 'fail', 'message': '이미 존재하는 유저 아이디입니다.'})
     
     hashed_pw = bcrypt.hashpw(user_pw.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
-    users_collection.insert_one({'userId': user_id, 'userPw': hashed_pw})
+    users_collection.insert_one(
+    {
+        'userId': user_id,
+        'userPw': hashed_pw,
+        'wins': 0,
+        'losses': 0
+    })
 
     return jsonify({'result': 'success', 'message': '회원가입이 완료되었습니다.'})
 

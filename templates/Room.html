@@ -8,14 +8,14 @@
 <body>
   <div class="section-left">
     <button class="profile-btn"> <!-- 프로필, 버튼 -->
-        <div>
+        <div class="profile-user">
           <img class="profile-image" src="{{ url_for('static', filename='images/Profile.png') }}" alt="Profile">
-          <span id="profileName"></span>
+          <span id="profileName">{{ username }}</span>
         </div>
         <div>
-          <span id="profileWins"></span>승 
-          <span id="profileLosses"></span>패 
-          승률<span id="profileWinRate"></span>%
+          <span id="profileWins">{{ wins }}</span>승 
+          <span id="profileLosses">{{ losses }}</span>패 
+          승률<span id="profileWinRate">{{ win_rate }}</span>%
         </div>
     </button>
 
@@ -24,7 +24,16 @@
         대전 기록
       </h1>
       <div id = "recordList" class="record-list"> <!-- 전적 여러개, 스크롤바 클래스도 여기 --> 
-        <!-- 버튼 여러개가 JS로 생성될 곳 -->
+        <!-- 예시 -->>
+        <button type="button" class="record-btn">
+          <div>
+            <span id="recordDate">te/st/te</span> <!-- 년도/월/일 -->
+            <span id="recordMatch">s:t</span> <!-- 몇:몇 -->
+            <span id="recordResult">t</span> <!-- 승/패 -->
+          </div>
+          전적
+        </button>
+        <!-- 예시 -->>
       </div>
     </div>
   </div>
@@ -36,25 +45,55 @@
       </h2>
     </button>
 
-    <div id="tutorialModal" class="modal-overlay hidden">
-      <div class="modal-wrapper"> <!-- 모달 -->
-        <div class="modal-content">
-          <h1 class="tutorial-title">Yacht 다이스 게임</h1>
-          <h2 class="tutorial-subtitle">총 5개의 주사위 중 원하는 주사위는 고정하고 나머지만 최대 3번까지 굴려, 최적의 족보를 채워나가는 확률과 선택의 주사위 포커 게임입니다.</h2>
-        </div>
-
-        <button type="button" id="closeTutorialBtn" class="modal-close-btn">
-          뒤로가기
-        </button>
-      </div>
-    </div>
-
     <button class="enter-btn"> <!-- 방 입장, 버튼 -->
       <h2>
         입장
       </h2>
     </button>
 
+  </div>
+
+  <div id="tutorialModal" class="modal-overlay hidden">
+    <div class="modal-wrapper"> <!-- 모달 -->
+      <div class="modal-content-A">
+        <h1 class="tutorial-title">Yacht 다이스 게임</h1>
+        <h2 class="tutorial-subtitle">총 5개의 주사위 중 원하는 주사위는 고정하고 나머지만 최대 3번까지 굴려, 최적의 족보를 채워나가는 확률과 선택의 주사위 포커 게임입니다.</h2>
+        <br>
+        <h2 class="tutorial-subtitle">1~6: 각 눈의 합산 점수</h2>
+        <h2 class="tutorial-subtitle">Choice: 주사위 5개 눈의 총합&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4 of a Kind: 같은 눈 4개 이상</h2>
+        <h2 class="tutorial-subtitle">Full House: 같은 눈 3개 + 2개&nbsp;&nbsp;&nbsp;&nbsp;S. Straight: 연속된 눈 4개</h2>
+        <h2 class="tutorial-subtitle">L. Straight: 연속된 눈 5개&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Yacht: 같은 눈 5개</h2>
+      </div>
+
+      <button type="button" id="closeTutorialBtn" class="modal-close-btn">
+        뒤로가기
+      </button>
+    </div>
+  </div>
+
+  <div id="profileModal" class="modal-overlay hidden">
+    <div class="modal-wrapper">
+      <div class="modal-content-B">
+        <h2 class="profile-title">이름 변경</h2>
+        <input id="userIdChange" type="text" class="input-field" placeholder="{{ username }}">
+      </div>
+
+      <button type="button" id="closeProfileBtn" class="modal-close-btn">
+        뒤로가기
+      </button>
+    </div>
+  </div>
+
+  <div id="enterModal" class="modal-overlay hidden">
+    <div class="modal-wrapper">
+      <div class="modal-content-B">
+        <input id="roomNum" type="text" class="input-field" placeholder="방 번호"> <!-- ID 퍼가세용 -->>
+      </div>
+
+      <button type="button" id="closeEnterBtn" class="modal-close-btn">
+        뒤로가기
+      </button>
+    </div>
   </div>
 
   <script src="{{ url_for('static', filename='js/modalProfile.js') }}"></script>

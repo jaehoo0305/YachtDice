@@ -69,12 +69,44 @@ body
   }
 }
 
+.profile-user 
+{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
 .profile-image
 {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  display: block;
+}
+
+.input-field
+{
+  width: 60%;
+  padding: 8px 13px;
+  border: none;
+  border-radius: 9999px;
+  background-color: #B5B5B5;
+  font-size: 20px;
+  outline: none;
+
+  input 
+  {
+    color: #000000;
+  }
+  input::placeholder 
+  {
+    color: #7C7C7C;
+  }
+}
+
+.profile-title
+{
+  font-size: 25px;
+  margin: 0px 20px 0px 0px;
 }
 
 /* Match Record */
@@ -237,13 +269,25 @@ body
   gap: 16px;
 }
 
-.modal-content
+.modal-content-A
 {
   background-color: #D9D9D9;
   border-radius: 20px;
   padding: 32px;
   width: 600px;           
   height: 300px;
+}
+
+.modal-content-B
+{
+  background-color: #D9D9D9;
+  border-radius: 20px;
+  padding: 32px;
+  width: 600px;           
+  height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .hidden 
