@@ -9,6 +9,7 @@ SECRET_KEY = 'YACHT_DICE_SECRET_KEY_2008'
 client = MongoClient('mongodb+srv://grooochyjeff1234_db_user:iphxS3QU5dlNzI3z@cluster0.dkuz0fy.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
 db = client['yacht_dice']
 users_collection = db['users']
+matches_collection = db['matches']
 CORS(app)
 
 TOTAL_CATEGORIES_COUNT = 12
@@ -88,17 +89,51 @@ def room():
     user_id = payload['userId']
     
     user = users_collection.find_one({'userId': user_id})
-    wins = user.get('wins', 0)
-    losses = user.get('losses', 0)
+    wins = user.get('wins', 0) if user else 0
+    losses = user.get('losses', 0) if user else 0
     
     total_games = wins + losses
     win_rate = round((wins / total_games) * 100, 1) if total_games > 0 else 0
+
+    match_cursor = matches_collection.find({'players': user_id}).sort('created_at', -1).limit(20)
+    records = []
+    for m in match_cursor:
+        players = m.get('players', [])
+        scores = m.get('scores', {})
+        winner = m.get('winner')
+        created_at = m.get('created_at')
+        
+        date_str = created_at.strftime('%m/%d %H:%M') if isinstance(created_at, datetime.datetime) else '최근'
+        my_score = scores.get(user_id, 0)
+        
+        opponent_list = [p for p in players if p != user_id]
+        opponent = opponent_list[0] if opponent_list else '상대'
+        opp_score = scores.get(opponent, 0)
+
+        if winner == 'draw':
+            result_text = '무'
+            result_class = 'draw'
+        elif winner == user_id:
+            result_text = '승'
+            result_class = 'win'
+        else:
+            result_text = '패'
+            result_class = 'loss'
+
+        records.append({
+            'date': date_str,
+            'opponent': opponent,
+            'score_text': f"{my_score} : {opp_score}",
+            'result_text': result_text,
+            'result_class': result_class
+        })
 
     return render_template('Room.html', 
                            username=user_id, 
                            wins=wins, 
                            losses=losses, 
-                           win_rate=win_rate)
+                           win_rate=win_rate,
+                           records=records)
 
 @app.route('/api/create-room', methods=['POST'])
 @login_required
@@ -257,6 +292,15 @@ def select_score():
         if winner != 'draw':
             users_collection.update_one({'userId': winner}, {'$inc': {'wins': 1}})
             users_collection.update_one({'userId': loser}, {'$inc': {'losses': 1}})
+
+        # 🗄️ 대전 기록 컬렉션에 매치 결과 저장
+        matches_collection.insert_one({
+            'room_id': room_id,
+            'players': players,
+            'scores': final_scores,
+            'winner': winner,
+            'created_at': datetime.datetime.now()
+        })
 
         db.rooms.update_one(
             {'room_id': room_id},
@@ -422,4 +466,4 @@ def roll_dice():
     })
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    app.run(host='0.0.0.0', debug=True, port=5000)

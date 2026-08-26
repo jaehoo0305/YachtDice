@@ -66,11 +66,11 @@ body
 
   input 
   {
-    color: #000000; /* 예: 선명한 검은색 */
+    color: #000000;
   }
   input::placeholder 
   {
-    color: #7C7C7C; /* 예: 연한 회색 */
+    color: #7C7C7C;
   }
 }
 

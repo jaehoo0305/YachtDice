@@ -7,7 +7,7 @@
 </head>
 <body>
   <div class="section-left">
-    <button class="profile-btn"> <!-- 프로필, 버튼 -->
+    <button class="profile-btn">
         <div class="profile-user">
           <img class="profile-image" src="{{ url_for('static', filename='images/Profile.png') }}" alt="Profile">
           <span id="profileName">{{ username }}</span>
@@ -15,46 +15,45 @@
         <div>
           <span id="profileWins">{{ wins }}</span>승 
           <span id="profileLosses">{{ losses }}</span>패 
-          승률<span id="profileWinRate">{{ win_rate }}</span>%
+          승률 <span id="profileWinRate">{{ win_rate }}</span>%
         </div>
     </button>
 
-    <div class="match-box"> <!-- 대전 기록, 박스 - 전적, 버튼 -->
-      <h1>
-        대전 기록
-      </h1>
-      <div id = "recordList" class="record-list"> <!-- 전적 여러개, 스크롤바 클래스도 여기 --> 
-        <!-- 예시 -->
-        <button type="button" class="record-btn">
-          <div>
-            <span id="recordDate">te/st/te</span> <!-- 년도/월/일 -->
-            <span id="recordMatch">s:t</span> <!-- 몇:몇 -->
-            <span id="recordResult">t</span> <!-- 승/패 -->
+    <div class="match-box">
+      <h1>대전 기록</h1>
+      <div id="recordList" class="record-list">
+        {% if records and records|length > 0 %}
+          {% for r in records %}
+          <div class="record-btn">
+            <div class="record-info">
+              <span class="record-date">{{ r.date }}</span>
+              <span class="record-opponent">vs {{ r.opponent }}</span>
+              <span class="record-match">{{ r.score_text }}</span>
+            </div>
+            <span class="record-result {{ r.result_class }}">{{ r.result_text }}</span>
           </div>
-          전적
-        </button>
-        <!-- 예시 -->
+          {% endfor %}
+        {% else %}
+          <div class="no-records">
+            아직 대전 기록이 없습니다.
+          </div>
+        {% endif %}
       </div>
     </div>
   </div>
 
   <div class="section-right">
-    <button class="tutorial-btn"> <!-- 튜토리얼, 버튼 -->
-      <h2>
-        튜토리얼
-      </h2>
+    <button class="tutorial-btn">
+      <h2>튜토리얼</h2>
     </button>
 
-    <button class="enter-btn"> <!-- 방 입장, 버튼 -->
-      <h2>
-        입장
-      </h2>
+    <button class="enter-btn">
+      <h2>입장</h2>
     </button>
-
   </div>
 
   <div id="tutorialModal" class="modal-overlay hidden">
-    <div class="modal-wrapper"> <!-- 모달 -->
+    <div class="modal-wrapper">
       <div class="modal-content-A">
         <h1 class="tutorial-title">Yacht 다이스 게임</h1>
         <h2 class="tutorial-subtitle">총 5개의 주사위 중 원하는 주사위는 고정하고 나머지만 최대 3번까지 굴려, 최적의 족보를 채워나가는 확률과 선택의 주사위 포커 게임입니다.</h2>
@@ -87,7 +86,7 @@
   <div id="enterModal" class="modal-overlay hidden">
     <div class="modal-wrapper">
       <div class="modal-content-B">
-        <input id="roomNum" type="text" class="input-field" placeholder="방 번호"> <!-- ID 퍼가세용 -->
+        <input id="roomNum" type="text" class="input-field" placeholder="방 번호">
       </div>
 
       <button type="button" id="closeEnterBtn" class="modal-close-btn">
