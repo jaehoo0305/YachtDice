@@ -34,6 +34,27 @@ def login_required(f):
     
     return decorated_function
 
+def calculate_yacht_scores(dice_values):
+    counts = {i: dice_values.count(i) for i in range(1, 7)}
+    unique_vals = set(dice_values)
+    total_sum = sum(dice_values)
+    
+    scores = {
+        'aces': counts[1] * 1,
+        'deuces': counts[2] * 2,
+        'threes': counts[3] * 3,
+        'fours': counts[4] * 4,
+        'fives': counts[5] * 5,
+        'sixes': counts[6] * 6,
+        'choice': total_sum,
+        '4_of_a_kind': total_sum if any(cnt >= 4 for cnt in counts.values()) else 0,
+        'full_house': total_sum if (3 in counts.values() and 2 in counts.values()) or list(counts.values()).count(5) == 1 else 0,
+        'small_straight': 15 if {1,2,3,4}.issubset(unique_vals) or {2,3,4,5}.issubset(unique_vals) or {3,4,5,6}.issubset(unique_vals) else 0,
+        'large_straight': 30 if unique_vals in [{1,2,3,4,5}, {2,3,4,5,6}] else 0,
+        'yacht': 50 if len(unique_vals) == 1 else 0
+    }
+    return scores
+
 @app.route('/')
 def home():
     token = request.cookies.get('userToken')
@@ -65,10 +86,43 @@ def room():
                            losses=losses, 
                            win_rate=win_rate)
 
-@app.route('/game')
-@login_required  # 추가
-def Game():
-    return render_template('Game.html')
+@app.route('/api/create-room', methods=['POST'])
+@login_required
+def create_room():
+    data = request.get_json() or {}
+    room_id = data.get('room_id')
+
+    if not room_id:
+        return jsonify({'result': 'fail', 'message': '방 번호를 입력해주세요.'})
+
+    room_id = str(room_id).strip()
+
+    existing_room = db.rooms.find_one({'room_id': room_id})
+    if existing_room:
+        return jsonify({'redirect_url': f'/game/{room_id}'})
+
+    token = request.cookies.get('userToken')
+    payload = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
+    host_id = payload['userId']
+
+    db.rooms.insert_one({
+        'room_id': room_id,
+        'host': host_id,
+        'players': [host_id],
+        'status': 'waiting'
+    })
+
+    return jsonify({
+        'result': 'success', 
+        'message': '방이 생성되었습니다.',
+        'redirect_url': f'/game/{room_id}'
+    })
+    
+
+@app.route('/game/<room_id>')
+@login_required
+def Game(room_id):
+    return render_template('Game.html', room_id=room_id)
 
 @app.route('/api/register', methods=['POST'])
 def register():
@@ -115,7 +169,7 @@ def login():
 
     payload = {
         'userId': user_id,
-        'exp': datetime.datetime.now() + datetime.timedelta(days=7)
+        'exp': datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(days=7)
     }
 
     token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
@@ -148,32 +202,38 @@ def verify_token():
     except jwt.InvalidTokenError:
         return jsonify({'result': 'fail', 'message': '유효하지 않은 토큰입니다.'})
 
-@app.route('/api/roll', methods=['post'])
+@app.route('/api/roll', methods=['POST'])
+@login_required
 def roll_dice():
-    holdval = request.get_json()
-    getdice = holdval.get('dicelist', [])
+    token = request.cookies.get('userToken')
+    payload = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
+    current_user_id = payload['userId']
+
+    data = request.get_json() or {}
+    getdice = data.get('dicelist', [])
     new_dicelist = []
+
     for i in range(5):
-        if i < len(getdice) and getdice[i].get('hold') == True:
+        if i < len(getdice) and getdice[i].get('hold') is True:
             new_dicelist.append({
                 'val': getdice[i].get('val'),
                 'hold': True
-                })
+            })
         else:
             new_dicelist.append({
                 'val': random.randint(1, 6),
                 'hold': False
-                }) 
-    combolist =[]
-    if(new_dicelist[i]==1):
-        combolist.append({
-            'yacht':True
-        })
-    else:
-        combolist.append({
-            'yacht':False
-        })
-    return jsonify({'combo':combolist, 'result': 'success', 'dicelist': new_dicelist})
+            })
+
+    dice_values = [d['val'] for d in new_dicelist]
+    scores = calculate_yacht_scores(dice_values)
+
+    return jsonify({
+        'result': 'success',
+        'userId': current_user_id,
+        'dicelist': new_dicelist,
+        'scores': scores
+    })
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

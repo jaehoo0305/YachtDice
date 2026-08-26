@@ -1,260 +1,19 @@
 <!DOCTYPE html>
-<html lang="ko"><head>
-<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<html lang="ko">
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yacht Dice</title>
-
+    <link rel="stylesheet" href="{{ url_for('static', filename='GameStyle.css') }}">
     <style>
-        html,
-        body {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-        }
 
-        .mainBox-ingame {
-            background-color: #959595;
-            width: 100vw;
-            height: 100vh;
-
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .subbox {
-            width: 1000px;
-            height: 600px;
-
-            display: flex;
-            gap: 40px;
-            align-items: flex-start;
-        }
-
-        .scorecard {
-            width: 320px;
-            background-color: #d1d1d1;
-            border: 4px solid #333;
-            padding: 8px;
-            font-family: Arial, sans-serif;
-            box-sizing: border-box;
-            flex-shrink: 0;
-        }
-
-        .score-row {
-            display: grid;
-            grid-template-columns: 1.4fr 1fr 1fr;
-
-            border: 2px solid #333;
-            margin-bottom: -2px;
-        }
-
-        .cell {
-            background-color: #fff;
-            border-right: 2px solid #333;
-
-            padding: 8px 4px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            font-size: 14px;
-            font-weight: bold;
-            color: #111;
-
-            box-sizing: border-box;
-        }
-
-        .cell:last-child {
-            border-right: none;
-        }
-
-        .header-row {
-            background-color: #e2e2e2;
-        }
-
-        .turn-cell {
-            background-color: #e2e2e2;
-
-            align-items: flex-start;
-            flex-direction: column;
-
-            padding-left: 8px;
-        }
-
-        .turn-label {
-            font-size: 16px;
-            font-weight: normal;
-        }
-
-        .turn-value {
-            font-size: 24px;
-            font-weight: bold;
-            line-height: 1.1;
-        }
-
-        .player-header {
-            background-color: #e2e2e2;
-        }
-
-        .label-cell {
-            justify-content: center;
-            align-items: flex-start;
-
-            padding-left: 10px;
-            font-size: 13px;
-        }
-
-        .score-row:nth-child(8) {
-            border-bottom: 2px dashed #333;
-        }
-
-        .gap-row {
-            margin-top: 10px;
-        }
-
-        .total-row {
-            margin-top: 10px;
-            background-color: #fff;
-        }
-
-        .total-label {
-            font-size: 18px;
-        }
-
-        .box-score {
-            border: 2px solid #333;
-            padding: 4px 12px;
-            border-radius: 4px;
-            font-size: 16px;
-        }
-
-        .game-area {
-            width: 500px;
-            height: 600px;
-
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .title-box {
-            width: 100%;
-            text-align: center;
-        }
-
-        .title-box h1 {
-            margin: 0 0 30px 0;
-            font-size: 40px;
-        }
-
-        .roll-button {
-            width: 200px;
-            padding: 10px;
-
-            border: none;
-            border-radius: 9999px;
-
-            background-color: #638FFF;
-
-            font-size: 20px;
-            color: #fff;
-
-            outline: none;
-            cursor: pointer;
-
-            transition:
-                background-color 0.2s ease,
-                transform 0.1s ease;
-        }
-
-        .roll-button:hover {
-            background-color: #4A6ED1;
-            transform: scale(1.025);
-        }
-
-        .roll-button:active {
-            background-color: #4ad16e;
-            transform: scale(0.975);
-        }
-
-        .dice-area {
-            width: 100%;
-            margin-top: 50px;
-
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .dice-row {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .hole-button {
-            width: 70px;
-
-            background-color: #638FFF;
-            color: #09000c;
-
-            border: 0;
-            padding: 6px 12px;
-
-            border-radius: 9999px;
-
-            cursor: pointer;
-
-            transition:
-                background-color 0.2s ease,
-                color 0.2s ease;
-        }
-
-        .hole-button:hover {
-            background-color: #4A6ED1;
-            color: white;
-        }
-
-        .hole-button.active {
-            background-color: #FF6363;
-            color: #09000c;
-            font-weight: bold;
-        }
-
-        .dice-row h3 {
-            margin: 0;
-        }
-
-        .dice-value {
-            display: inline-flex;
-
-            width: 35px;
-            height: 35px;
-
-            justify-content: center;
-            align-items: center;
-
-            background-color: white;
-
-            border: 2px solid #333;
-            border-radius: 8px;
-
-            font-size: 20px;
-        }
     </style>
 </head>
 
 <body class="mainBox-ingame">
-
     <div class="subbox">
-
-        <!-- 점수판 -->
-
         <div class="scorecard">
 
             <div class="score-row header-row">
@@ -274,38 +33,38 @@
 
             <div class="score-row">
                 <div class="cell label-cell">⚀ Aces</div>
-                <div class="cell input-cell"></div>
-                <div class="cell input-cell"></div>
+                <div class="cell input-cell" data-score-type="aces" onclick="selectScore(this)"></div>
+                <div class="cell input-cell" data-score-type="aces" onclick="selectScore(this)"></div>
             </div>
 
             <div class="score-row">
                 <div class="cell label-cell">⚁ Deuces</div>
-                <div class="cell input-cell"></div>
-                <div class="cell input-cell"></div>
+                <div class="cell input-cell" data-score-type="deuces" onclick="selectScore(this)"></div>
+                <div class="cell input-cell" data-score-type="deuces" onclick="selectScore(this)"></div>
             </div>
 
             <div class="score-row">
                 <div class="cell label-cell">⚂ Threes</div>
-                <div class="cell input-cell"></div>
-                <div class="cell input-cell"></div>
+                <div class="cell input-cell" data-score-type="threes" onclick="selectScore(this)"></div>
+                <div class="cell input-cell" data-score-type="threes" onclick="selectScore(this)"></div>
             </div>
 
             <div class="score-row">
                 <div class="cell label-cell">⚃ Fours</div>
-                <div class="cell input-cell"></div>
-                <div class="cell input-cell"></div>
+                <div class="cell input-cell" data-score-type="fours" onclick="selectScore(this)"></div>
+                <div class="cell input-cell" data-score-type="fours" onclick="selectScore(this)"></div>
             </div>
 
             <div class="score-row">
                 <div class="cell label-cell">⚄ Fives</div>
-                <div class="cell input-cell"></div>
-                <div class="cell input-cell"></div>
+                <div class="cell input-cell" data-score-type="fives" onclick="selectScore(this)"></div>
+                <div class="cell input-cell" data-score-type="fives" onclick="selectScore(this)"></div>
             </div>
 
             <div class="score-row">
                 <div class="cell label-cell">⚅ Sixes</div>
-                <div class="cell input-cell"></div>
-                <div class="cell input-cell"></div>
+                <div class="cell input-cell" data-score-type="sixes" onclick="selectScore(this)"></div>
+                <div class="cell input-cell" data-score-type="sixes" onclick="selectScore(this)"></div>
             </div>
 
             <div class="score-row">
@@ -322,38 +81,38 @@
 
             <div class="score-row gap-row">
                 <div class="cell label-cell">Choice</div>
-                <div class="cell input-cell"></div>
-                <div class="cell input-cell"></div>
+                <div class="cell input-cell" data-score-type="choice" onclick="selectScore(this)"></div>
+                <div class="cell input-cell" data-score-type="choice" onclick="selectScore(this)"></div>
             </div>
 
             <div class="score-row">
                 <div class="cell label-cell">4 of a kind</div>
-                <div class="cell input-cell"></div>
-                <div class="cell input-cell"></div>
+                <div class="cell input-cell" data-score-type="4_of_a_kind" onclick="selectScore(this)"></div>
+                <div class="cell input-cell" data-score-type="4_of_a_kind" onclick="selectScore(this)"></div>
             </div>
 
             <div class="score-row">
                 <div class="cell label-cell">Full House</div>
-                <div class="cell input-cell"></div>
-                <div class="cell input-cell"></div>
+                <div class="cell input-cell" data-score-type="full_house" onclick="selectScore(this)"></div>
+                <div class="cell input-cell" data-score-type="full_house" onclick="selectScore(this)"></div>
             </div>
 
             <div class="score-row">
                 <div class="cell label-cell">S. Straight</div>
-                <div class="cell input-cell"></div>
-                <div class="cell input-cell"></div>
+                <div class="cell input-cell" data-score-type="small_straight" onclick="selectScore(this)"></div>
+                <div class="cell input-cell" data-score-type="small_straight" onclick="selectScore(this)"></div>
             </div>
 
             <div class="score-row">
                 <div class="cell label-cell">L. Straight</div>
-                <div class="cell input-cell"></div>
-                <div class="cell input-cell"></div>
+                <div class="cell input-cell" data-score-type="large_straight" onclick="selectScore(this)"></div>
+                <div class="cell input-cell" data-score-type="large_straight" onclick="selectScore(this)"></div>
             </div>
 
             <div class="score-row">
                 <div class="cell label-cell">Yacht</div>
-                <div class="cell input-cell"></div>
-                <div class="cell input-cell"></div>
+                <div class="cell input-cell" data-score-type="yacht" onclick="selectScore(this)"></div>
+                <div class="cell input-cell" data-score-type="yacht" onclick="selectScore(this)"></div>
             </div>
 
             <div class="score-row total-row">
@@ -372,177 +131,158 @@
 
         </div>
 
-
-        <!-- 게임로직 -->
         <div class="game-area">
-
             <div class="title-box">
                 <h1>Yacht Dice</h1>
-
                 <button type="button" class="roll-button" onclick="rollDice()">
                     주사위 굴리기
                 </button>
             </div>
-
-
             <div class="dice-area">
-
                 <div class="dice-row">
                     <button type="button" class="hole-button" onclick="hold(1, this)">
                         홀드
                     </button>
-
                     <h3>
                         주사위 결과 1:
                         <span id="dice-result1" class="dice-value">0</span>
                     </h3>
                 </div>
-
-
                 <div class="dice-row">
                     <button type="button" class="hole-button" onclick="hold(2, this)">
                         홀드
                     </button>
-
                     <h3>
                         주사위 결과 2:
                         <span id="dice-result2" class="dice-value">0</span>
                     </h3>
                 </div>
-
-
                 <div class="dice-row">
                     <button type="button" class="hole-button" onclick="hold(3, this)">
                         홀드
                     </button>
-
                     <h3>
                         주사위 결과 3:
                         <span id="dice-result3" class="dice-value">0</span>
                     </h3>
                 </div>
-
-
                 <div class="dice-row">
                     <button type="button" class="hole-button" onclick="hold(4, this)">
                         홀드
                     </button>
-
                     <h3>
                         주사위 결과 4:
                         <span id="dice-result4" class="dice-value">0</span>
                     </h3>
                 </div>
-
-
                 <div class="dice-row">
                     <button type="button" class="hole-button" onclick="hold(5, this)">
                         홀드
                     </button>
-
                     <h3>
                         주사위 결과 5:
                         <span id="dice-result5" class="dice-value">0</span>
                     </h3>
                 </div>
-
             </div>
-
         </div>
-
     </div>
 
 
     <script>
-
         let holdStatus = [false, false, false, false, false];
+        let currentScores = null;
+        let isRolled = false;
 
-
-        // 홀드
         function hold(diceIndex, button) {
-
             const index = diceIndex - 1;
-
             holdStatus[index] = !holdStatus[index];
-
-            button.classList.toggle(
-                "active",
-                holdStatus[index]
-            );
+            button.classList.toggle("active", holdStatus[index]);
         }
 
-
-        // 주사위 굴리기
         async function rollDice() {
-
             const dicelist = [];
 
             for (let i = 1; i <= 5; i++) {
-
-                const element =
-                    document.getElementById(`dice-result${i}`);
-
+                const element = document.getElementById(`dice-result${i}`);
                 dicelist.push({
                     val: Number(element.innerText),
                     hold: holdStatus[i - 1]
                 });
             }
 
-
             try {
-
-                const response = await fetch(
-                    "http://localhost:5000/api/roll",
-                    {
-                        method: "POST",
-
-                        headers: {
-                            "Accept": "application/json",
-                            "Content-Type": "application/json"
-                        },
-
-                        body: JSON.stringify({
-                            dicelist: dicelist
-                        })
-                    }
-                );
-
+                const response = await fetch('/api/roll', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify({ dicelist: dicelist })
+                });
 
                 if (!response.ok) {
-                    throw new Error(
-                        `HTTP error: ${response.status}`
-                    );
+                    const errData = await response.json().catch(() => ({}));
+                    throw new Error(errData.message || '로그인이 필요하거나 요청에 실패했습니다.');
                 }
-
 
                 const data = await response.json();
 
-                console.log(data);
-
-
                 for (let i = 0; i < 5; i++) {
-
-                    document.getElementById(
-                        `dice-result${i + 1}`
-                    ).innerText =
-                        data.dicelist[i].val;
+                    document.getElementById(`dice-result${i + 1}`).innerText = data.dicelist[i].val;
                 }
 
+                currentScores = data.scores;
+                isRolled = true;
+                updateScorePreview();
+
             } catch (error) {
-
-                console.error(
-                    "주사위 굴리기 실패:",
-                    error
-                );
-
-                alert(
-                    "서버와 연결할 수 없습니다."
-                );
+                console.error("주사위 굴리기 실패:", error);
+                alert(error.message || "서버와 연결할 수 없습니다.");
             }
         }
 
+        function updateScorePreview() {
+            if (!currentScores) return;
+
+            const inputCells = document.querySelectorAll('.input-cell');
+            inputCells.forEach(cell => {
+                if (cell.classList.contains('fixed')) return;
+
+                const scoreType = cell.getAttribute('data-score-type');
+                if (scoreType && currentScores[scoreType] !== undefined) {
+                    cell.innerText = currentScores[scoreType];
+                    cell.style.color = '#999';
+                }
+            });
+        }
+
+        function selectScore(cell) {
+            if (!isRolled || cell.classList.contains('fixed')) return;
+
+            const scoreType = cell.getAttribute('data-score-type');
+            if (!scoreType || currentScores[scoreType] === undefined) return;
+
+            cell.innerText = currentScores[scoreType];
+            cell.style.color = '#000';
+            cell.classList.add('fixed');
+
+            const inputCells = document.querySelectorAll('.input-cell');
+            inputCells.forEach(c => {
+                if (!c.classList.contains('fixed')) {
+                    c.innerText = '';
+                }
+            });
+
+            isRolled = false;
+            currentScores = null;
+            holdStatus = [false, false, false, false, false];
+
+            document.querySelectorAll('.hole-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+        }
     </script>
+</body>
 
-
-
-</body></html>
+</html>

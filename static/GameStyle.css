@@ -1,0 +1,244 @@
+ * 
+ html,
+ body {
+     margin: 0;
+     padding: 0;
+     width: 100%;
+     height: 100%;
+     overflow: hidden;
+ }
+
+ .mainBox-ingame {
+     background-color: #959595;
+     width: 100vw;
+     height: 100vh;
+
+     display: flex;
+     justify-content: center;
+     align-items: center;
+ }
+
+ .subbox {
+     width: 1000px;
+     height: 600px;
+
+     display: flex;
+     gap: 40px;
+     align-items: flex-start;
+ }
+
+ .scorecard {
+     width: 320px;
+     background-color: #d1d1d1;
+     border: 4px solid #333;
+     padding: 8px;
+     font-family: Arial, sans-serif;
+     box-sizing: border-box;
+     flex-shrink: 0;
+ }
+
+ .score-row {
+     display: grid;
+     grid-template-columns: 1.4fr 1fr 1fr;
+
+     border: 2px solid #333;
+     margin-bottom: -2px;
+ }
+
+ .cell {
+     background-color: #fff;
+     border-right: 2px solid #333;
+
+     padding: 8px 4px;
+
+     display: flex;
+     align-items: center;
+     justify-content: center;
+
+     font-size: 14px;
+     font-weight: bold;
+     color: #111;
+
+     box-sizing: border-box;
+ }
+
+ .cell:last-child {
+     border-right: none;
+ }
+
+ .header-row {
+     background-color: #e2e2e2;
+ }
+
+ .turn-cell {
+     background-color: #e2e2e2;
+
+     align-items: flex-start;
+     flex-direction: column;
+
+     padding-left: 8px;
+ }
+
+ .turn-label {
+     font-size: 16px;
+     font-weight: normal;
+ }
+
+ .turn-value {
+     font-size: 24px;
+     font-weight: bold;
+     line-height: 1.1;
+ }
+
+ .player-header {
+     background-color: #e2e2e2;
+ }
+
+ .label-cell {
+     justify-content: center;
+     align-items: flex-start;
+
+     padding-left: 10px;
+     font-size: 13px;
+ }
+
+ .score-row:nth-child(8) {
+     border-bottom: 2px dashed #333;
+ }
+
+ .gap-row {
+     margin-top: 10px;
+ }
+
+ .total-row {
+     margin-top: 10px;
+     background-color: #fff;
+ }
+
+ .total-label {
+     font-size: 18px;
+ }
+
+ .box-score {
+     border: 2px solid #333;
+     padding: 4px 12px;
+     border-radius: 4px;
+     font-size: 16px;
+ }
+
+.game-area {
+    width: 600px;
+    height: 600px;
+    background-image: url("/static/images/image-1.png");
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+ .title-box {
+    padding-top: 50px;
+     width: 100%;
+     text-align: center;
+ }
+
+ .title-box h1 {
+     margin: 0 0 30px 0;
+     font-size: 40px;
+ }
+
+ .roll-button {
+     width: 200px;
+     padding: 10px;
+
+     border: none;
+     border-radius: 9999px;
+
+     background-color: #638FFF;
+
+     font-size: 20px;
+     color: #fff;
+
+     outline: none;
+     cursor: pointer;
+
+     transition:
+         background-color 0.2s ease,
+         transform 0.1s ease;
+ }
+
+ .roll-button:hover {
+     background-color: #4A6ED1;
+     transform: scale(1.025);
+ }
+
+ .roll-button:active {
+     background-color: #4ad16e;
+     transform: scale(0.975);
+ }
+
+ .dice-area {
+     width: 480px;
+     margin-top: 50px;
+
+     display: flex;
+     flex-direction: column;
+     gap: 10px;
+ }
+
+ .dice-row {
+     display: flex;
+     align-items: center;
+     gap: 15px;
+ }
+
+ .hole-button {
+     width: 70px;
+
+     background-color: #638FFF;
+     color: #09000c;
+
+     border: 0;
+     padding: 6px 12px;
+
+     border-radius: 9999px;
+
+     cursor: pointer;
+
+     transition:
+         background-color 0.2s ease,
+         color 0.2s ease;
+ }
+
+ .hole-button:hover {
+     background-color: #4A6ED1;
+     color: white;
+ }
+
+ .hole-button.active {
+     background-color: #FF6363;
+     color: #09000c;
+     font-weight: bold;
+ }
+
+ .dice-row h3 {
+     margin: 0;
+ }
+
+ .dice-value {
+     display: inline-flex;
+
+     width: 35px;
+     height: 35px;
+
+     justify-content: center;
+     align-items: center;
+
+     background-color: white;
+
+     border: 2px solid #333;
+     border-radius: 8px;
+
+     font-size: 20px;
+ }
