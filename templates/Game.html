@@ -8,7 +8,7 @@
     <title>Yacht Dice</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='GameStyle.css') }}">
     <style>
-
+        @import url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/NanumSquare_ac.css');
     </style>
 </head>
 
@@ -19,114 +19,130 @@
             <div class="score-row header-row">
                 <div class="cell turn-cell">
                     <span class="turn-label">Turn</span>
-                    <span class="turn-value">1/12</span>
+                    <span class="turn-value" id="turn-display">-</span>
                 </div>
 
-                <div class="cell player-header">
+                <div class="cell player-header" id="player-header-0" data-player-index="0">
                     플레이어 1
                 </div>
 
-                <div class="cell player-header">
+                <div class="cell player-header" id="player-header-1" data-player-index="1">
                     플레이어 2
                 </div>
             </div>
 
             <div class="score-row">
                 <div class="cell label-cell">⚀ Aces</div>
-                <div class="cell input-cell" data-score-type="aces" onclick="selectScore(this)"></div>
-                <div class="cell input-cell" data-score-type="aces" onclick="selectScore(this)"></div>
+                <div class="cell input-cell" data-score-type="aces" data-player-idx="0" onclick="selectScore(this)">
+                </div>
+                <div class="cell input-cell" data-score-type="aces" data-player-idx="1" onclick="selectScore(this)">
+                </div>
             </div>
 
             <div class="score-row">
                 <div class="cell label-cell">⚁ Deuces</div>
-                <div class="cell input-cell" data-score-type="deuces" onclick="selectScore(this)"></div>
-                <div class="cell input-cell" data-score-type="deuces" onclick="selectScore(this)"></div>
+                <div class="cell input-cell" data-score-type="deuces" data-player-idx="0" onclick="selectScore(this)">
+                </div>
+                <div class="cell input-cell" data-score-type="deuces" data-player-idx="1" onclick="selectScore(this)">
+                </div>
             </div>
 
             <div class="score-row">
                 <div class="cell label-cell">⚂ Threes</div>
-                <div class="cell input-cell" data-score-type="threes" onclick="selectScore(this)"></div>
-                <div class="cell input-cell" data-score-type="threes" onclick="selectScore(this)"></div>
+                <div class="cell input-cell" data-score-type="threes" data-player-idx="0" onclick="selectScore(this)">
+                </div>
+                <div class="cell input-cell" data-score-type="threes" data-player-idx="1" onclick="selectScore(this)">
+                </div>
             </div>
 
             <div class="score-row">
                 <div class="cell label-cell">⚃ Fours</div>
-                <div class="cell input-cell" data-score-type="fours" onclick="selectScore(this)"></div>
-                <div class="cell input-cell" data-score-type="fours" onclick="selectScore(this)"></div>
+                <div class="cell input-cell" data-score-type="fours" data-player-idx="0" onclick="selectScore(this)">
+                </div>
+                <div class="cell input-cell" data-score-type="fours" data-player-idx="1" onclick="selectScore(this)">
+                </div>
             </div>
 
             <div class="score-row">
                 <div class="cell label-cell">⚄ Fives</div>
-                <div class="cell input-cell" data-score-type="fives" onclick="selectScore(this)"></div>
-                <div class="cell input-cell" data-score-type="fives" onclick="selectScore(this)"></div>
+                <div class="cell input-cell" data-score-type="fives" data-player-idx="0" onclick="selectScore(this)">
+                </div>
+                <div class="cell input-cell" data-score-type="fives" data-player-idx="1" onclick="selectScore(this)">
+                </div>
             </div>
 
             <div class="score-row">
                 <div class="cell label-cell">⚅ Sixes</div>
-                <div class="cell input-cell" data-score-type="sixes" onclick="selectScore(this)"></div>
-                <div class="cell input-cell" data-score-type="sixes" onclick="selectScore(this)"></div>
+                <div class="cell input-cell" data-score-type="sixes" data-player-idx="0" onclick="selectScore(this)">
+                </div>
+                <div class="cell input-cell" data-score-type="sixes" data-player-idx="1" onclick="selectScore(this)">
+                </div>
             </div>
 
             <div class="score-row">
                 <div class="cell label-cell">Subtotal</div>
-                <div class="cell score-val">0/63</div>
-                <div class="cell score-val">0/63</div>
+                <div class="cell score-val" id="subtotal-0">0/63</div>
+                <div class="cell score-val" id="subtotal-1">0/63</div>
             </div>
 
             <div class="score-row bonus-row">
                 <div class="cell label-cell">+35 Bonus</div>
-                <div class="cell input-cell"></div>
-                <div class="cell input-cell"></div>
+                <div class="cell input-cell" id="bonus-0">0</div>
+                <div class="cell input-cell" id="bonus-1">0</div>
             </div>
 
             <div class="score-row gap-row">
                 <div class="cell label-cell">Choice</div>
-                <div class="cell input-cell" data-score-type="choice" onclick="selectScore(this)"></div>
-                <div class="cell input-cell" data-score-type="choice" onclick="selectScore(this)"></div>
+                <div class="cell input-cell" data-score-type="choice" data-player-idx="0" onclick="selectScore(this)">
+                </div>
+                <div class="cell input-cell" data-score-type="choice" data-player-idx="1" onclick="selectScore(this)">
+                </div>
             </div>
 
             <div class="score-row">
                 <div class="cell label-cell">4 of a kind</div>
-                <div class="cell input-cell" data-score-type="4_of_a_kind" onclick="selectScore(this)"></div>
-                <div class="cell input-cell" data-score-type="4_of_a_kind" onclick="selectScore(this)"></div>
+                <div class="cell input-cell" data-score-type="4_of_a_kind" data-player-idx="0"
+                    onclick="selectScore(this)"></div>
+                <div class="cell input-cell" data-score-type="4_of_a_kind" data-player-idx="1"
+                    onclick="selectScore(this)"></div>
             </div>
 
             <div class="score-row">
                 <div class="cell label-cell">Full House</div>
-                <div class="cell input-cell" data-score-type="full_house" onclick="selectScore(this)"></div>
-                <div class="cell input-cell" data-score-type="full_house" onclick="selectScore(this)"></div>
+                <div class="cell input-cell" data-score-type="full_house" data-player-idx="0"
+                    onclick="selectScore(this)"></div>
+                <div class="cell input-cell" data-score-type="full_house" data-player-idx="1"
+                    onclick="selectScore(this)"></div>
             </div>
 
             <div class="score-row">
                 <div class="cell label-cell">S. Straight</div>
-                <div class="cell input-cell" data-score-type="small_straight" onclick="selectScore(this)"></div>
-                <div class="cell input-cell" data-score-type="small_straight" onclick="selectScore(this)"></div>
+                <div class="cell input-cell" data-score-type="small_straight" data-player-idx="0"
+                    onclick="selectScore(this)"></div>
+                <div class="cell input-cell" data-score-type="small_straight" data-player-idx="1"
+                    onclick="selectScore(this)"></div>
             </div>
 
             <div class="score-row">
                 <div class="cell label-cell">L. Straight</div>
-                <div class="cell input-cell" data-score-type="large_straight" onclick="selectScore(this)"></div>
-                <div class="cell input-cell" data-score-type="large_straight" onclick="selectScore(this)"></div>
+                <div class="cell input-cell" data-score-type="large_straight" data-player-idx="0"
+                    onclick="selectScore(this)"></div>
+                <div class="cell input-cell" data-score-type="large_straight" data-player-idx="1"
+                    onclick="selectScore(this)"></div>
             </div>
 
             <div class="score-row">
                 <div class="cell label-cell">Yacht</div>
-                <div class="cell input-cell" data-score-type="yacht" onclick="selectScore(this)"></div>
-                <div class="cell input-cell" data-score-type="yacht" onclick="selectScore(this)"></div>
+                <div class="cell input-cell" data-score-type="yacht" data-player-idx="0" onclick="selectScore(this)">
+                </div>
+                <div class="cell input-cell" data-score-type="yacht" data-player-idx="1" onclick="selectScore(this)">
+                </div>
             </div>
 
             <div class="score-row total-row">
-                <div class="cell label-cell total-label">
-                    Total
-                </div>
-
-                <div class="cell score-val">
-                    <span class="box-score">0</span>
-                </div>
-
-                <div class="cell score-val">
-                    <span class="box-score">0</span>
-                </div>
+                <div class="cell label-cell total-label">Total</div>
+                <div class="cell score-val"><span class="box-score" id="total-0">0</span></div>
+                <div class="cell score-val"><span class="box-score" id="total-1">0</span></div>
             </div>
 
         </div>
@@ -137,131 +153,288 @@
                 <button type="button" class="roll-button" onclick="rollDice()">
                     주사위 굴리기
                 </button>
+                <samp class="dice-roll-count" id="roll-count-display">0/3</samp>
             </div>
             <div class="dice-area">
                 <div class="dice-row">
-                    <button type="button" class="hole-button" onclick="hold(1, this)">
-                        홀드
-                    </button>
-                    <h3>
-                        주사위 결과 1:
-                        <span id="dice-result1" class="dice-value">0</span>
-                    </h3>
+                    <button type="button" class="hole-button" onclick="hold(1, this)">홀드</button>
+                    <h3>주사위 결과 1: <span id="dice-result1" class="dice-value">0</span></h3>
                 </div>
                 <div class="dice-row">
-                    <button type="button" class="hole-button" onclick="hold(2, this)">
-                        홀드
-                    </button>
-                    <h3>
-                        주사위 결과 2:
-                        <span id="dice-result2" class="dice-value">0</span>
-                    </h3>
+                    <button type="button" class="hole-button" onclick="hold(2, this)">홀드</button>
+                    <h3>주사위 결과 2: <span id="dice-result2" class="dice-value">0</span></h3>
                 </div>
                 <div class="dice-row">
-                    <button type="button" class="hole-button" onclick="hold(3, this)">
-                        홀드
-                    </button>
-                    <h3>
-                        주사위 결과 3:
-                        <span id="dice-result3" class="dice-value">0</span>
-                    </h3>
+                    <button type="button" class="hole-button" onclick="hold(3, this)">홀드</button>
+                    <h3>주사위 결과 3: <span id="dice-result3" class="dice-value">0</span></h3>
                 </div>
                 <div class="dice-row">
-                    <button type="button" class="hole-button" onclick="hold(4, this)">
-                        홀드
-                    </button>
-                    <h3>
-                        주사위 결과 4:
-                        <span id="dice-result4" class="dice-value">0</span>
-                    </h3>
+                    <button type="button" class="hole-button" onclick="hold(4, this)">홀드</button>
+                    <h3>주사위 결과 4: <span id="dice-result4" class="dice-value">0</span></h3>
                 </div>
                 <div class="dice-row">
-                    <button type="button" class="hole-button" onclick="hold(5, this)">
-                        홀드
-                    </button>
-                    <h3>
-                        주사위 결과 5:
-                        <span id="dice-result5" class="dice-value">0</span>
-                    </h3>
+                    <button type="button" class="hole-button" onclick="hold(5, this)">홀드</button>
+                    <h3>주사위 결과 5: <span id="dice-result5" class="dice-value">0</span></h3>
                 </div>
             </div>
         </div>
     </div>
 
+<script>
+    const pathSegments = window.location.pathname.split('/');
+    const roomId = pathSegments[pathSegments.length - 1];
 
-    <script>
-        let holdStatus = [false, false, false, false, false];
-        let currentScores = null;
-        let isRolled = false;
+    let holdStatus = [false, false, false, false, false];
+    let currentScores = null;
+    let isRolled = false;
+    let myUserId = null;
+    let roomPlayers = [];
+    let currentTurn = null;
+    let rollCount = 0;
+    let isGameOver = false;
 
-        function hold(diceIndex, button) {
-            const index = diceIndex - 1;
-            holdStatus[index] = !holdStatus[index];
-            button.classList.toggle("active", holdStatus[index]);
+    function getMyUserIdFromCookie() {
+        const cookies = document.cookie.split('; ');
+        const tokenCookie = cookies.find(row => row.startsWith('userToken='));
+        if (!tokenCookie) return null;
+        
+        try {
+            const token = tokenCookie.split('=')[1];
+            const payloadBase64 = token.split('.')[1];
+            const decodedPayload = JSON.parse(atob(payloadBase64));
+            return decodedPayload.userId || null;
+        } catch (e) {
+            return null;
+        }
+    }
+
+    window.onload = async function () {
+        myUserId = getMyUserIdFromCookie();
+        await fetchGameState();
+        setInterval(checkAndSyncGameState, 1000);
+    };
+
+    function handleGameOver(winnerData) {
+        if (winnerData === 'draw') {
+            alert("무승부");
+            return;
         }
 
-        async function rollDice() {
-            const dicelist = [];
+        const winnerId = String(winnerData).trim();
+        const myId = String(myUserId || getMyUserIdFromCookie() || '').trim();
 
-            for (let i = 1; i <= 5; i++) {
-                const element = document.getElementById(`dice-result${i}`);
-                dicelist.push({
-                    val: Number(element.innerText),
-                    hold: holdStatus[i - 1]
-                });
-            }
-
-            try {
-                const response = await fetch('/api/roll', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    credentials: 'include',
-                    body: JSON.stringify({ dicelist: dicelist })
-                });
-
-                if (!response.ok) {
-                    const errData = await response.json().catch(() => ({}));
-                    throw new Error(errData.message || '로그인이 필요하거나 요청에 실패했습니다.');
-                }
-
-                const data = await response.json();
-
-                for (let i = 0; i < 5; i++) {
-                    document.getElementById(`dice-result${i + 1}`).innerText = data.dicelist[i].val;
-                }
-
-                currentScores = data.scores;
-                isRolled = true;
-                updateScorePreview();
-
-            } catch (error) {
-                console.error("주사위 굴리기 실패:", error);
-                alert(error.message || "서버와 연결할 수 없습니다.");
-            }
+        if (myId && winnerId === myId) {
+            alert("You win");
+        } else {
+            alert("You lose");
         }
+    }
 
-        function updateScorePreview() {
-            if (!currentScores) return;
+    async function fetchGameState() {
+        try {
+            const stateRes = await fetch(`/api/game-state/${roomId}`, {
+                method: 'GET',
+                credentials: 'include'
+            });
 
-            const inputCells = document.querySelectorAll('.input-cell');
-            inputCells.forEach(cell => {
-                if (cell.classList.contains('fixed')) return;
+            if (!stateRes.ok) return;
 
-                const scoreType = cell.getAttribute('data-score-type');
-                if (scoreType && currentScores[scoreType] !== undefined) {
-                    cell.innerText = currentScores[scoreType];
-                    cell.style.color = '#999';
+            const data = await stateRes.json();
+            roomPlayers = data.players || [];
+            currentTurn = data.current_turn;
+
+            if (!myUserId) {
+                myUserId = getMyUserIdFromCookie();
+            }
+
+            if (roomPlayers[0]) document.getElementById('player-header-0').innerText = roomPlayers[0];
+            if (roomPlayers[1]) document.getElementById('player-header-1').innerText = roomPlayers[1];
+
+            document.getElementById('turn-display').innerText = `${data.current_turn || '-'}`;
+
+            if (data.scores) {
+                for (const [userId, scoreObj] of Object.entries(data.scores)) {
+                    const pIdx = roomPlayers.indexOf(userId);
+                    if (pIdx !== -1) {
+                        for (const [stype, sval] of Object.entries(scoreObj)) {
+                            const cell = document.querySelector(`.input-cell[data-score-type="${stype}"][data-player-idx="${pIdx}"]`);
+                            if (cell) {
+                                cell.innerText = sval;
+                                cell.style.color = '#000';
+                                cell.classList.add('fixed');
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (!isRolled) {
+                rollCount = data.roll_count || 0;
+                document.getElementById('roll-count-display').innerText = `${rollCount}/3`;
+
+                if (data.dice) {
+                    for (let i = 0; i < 5; i++) {
+                        if (data.dice[i]) {
+                            document.getElementById(`dice-result${i + 1}`).innerText = data.dice[i].val;
+                        }
+                    }
+                }
+            }
+            updateTotals();
+
+            if (data.status === 'finished' && !isGameOver) {
+                isGameOver = true;
+                handleGameOver(data.winner);
+            }
+
+        } catch (e) {
+            console.error("데이터 로드 실패", e);
+        }
+    }
+
+    async function checkAndSyncGameState() {
+        if (isGameOver) return;
+        if (isRolled) return;
+        if (myUserId && currentTurn === myUserId) return;
+
+        await fetchGameState();
+    }
+
+    function updateTotals() {
+        const upperCategories = ['aces', 'deuces', 'threes', 'fours', 'fives', 'sixes'];
+        const lowerCategories = ['choice', '4_of_a_kind', 'full_house', 'small_straight', 'large_straight', 'yacht'];
+
+        [0, 1].forEach(pIdx => {
+            let upperSum = 0;
+            upperCategories.forEach(stype => {
+                const cell = document.querySelector(`.input-cell[data-score-type="${stype}"][data-player-idx="${pIdx}"]`);
+                if (cell && cell.classList.contains('fixed')) {
+                    const val = parseInt(cell.innerText, 10);
+                    if (!isNaN(val)) upperSum += val;
                 }
             });
-        }
 
-        function selectScore(cell) {
-            if (!isRolled || cell.classList.contains('fixed')) return;
+            const subtotalElem = document.getElementById(`subtotal-${pIdx}`);
+            if (subtotalElem) subtotalElem.innerText = `${upperSum}/63`;
+
+            let bonus = upperSum >= 63 ? 35 : 0;
+            const bonusElem = document.getElementById(`bonus-${pIdx}`);
+            if (bonusElem) bonusElem.innerText = bonus > 0 ? `+${bonus}` : '0';
+
+            let lowerSum = 0;
+            lowerCategories.forEach(stype => {
+                const cell = document.querySelector(`.input-cell[data-score-type="${stype}"][data-player-idx="${pIdx}"]`);
+                if (cell && cell.classList.contains('fixed')) {
+                    const val = parseInt(cell.innerText, 10);
+                    if (!isNaN(val)) lowerSum += val;
+                }
+            });
+
+            const totalElem = document.getElementById(`total-${pIdx}`);
+            if (totalElem) totalElem.innerText = upperSum + bonus + lowerSum;
+        });
+    }
+
+    function hold(diceIndex, button) {
+        const index = diceIndex - 1;
+        holdStatus[index] = !holdStatus[index];
+        button.classList.toggle("active", holdStatus[index]);
+    }
+
+    async function rollDice() {
+        const dicelist = [];
+        for (let i = 1; i <= 5; i++) {
+            const element = document.getElementById(`dice-result${i}`);
+            dicelist.push({
+                val: Number(element.innerText),
+                hold: holdStatus[i - 1]
+            });
+        }
+        try {
+            const response = await fetch('/api/roll', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                body: JSON.stringify({
+                    room_id: roomId,
+                    dicelist: dicelist
+                })
+            });
+
+            if (!response.ok) {
+                const errData = await response.json().catch(() => ({}));
+                throw new Error(errData.message || '요청에 실패했습니다.');
+            }
+
+            const data = await response.json();
+
+            for (let i = 0; i < 5; i++) {
+                document.getElementById(`dice-result${i + 1}`).innerText = data.dicelist[i].val;
+            }
+
+            currentScores = data.scores;
+            isRolled = true;
+            rollCount = data.roll_count;
+            document.getElementById('roll-count-display').innerText = `${rollCount}/3`;
+
+            if (data.userId) myUserId = data.userId;
+            updateScorePreview();
+
+        } catch (error) {
+            console.error("주사위 굴리기 실패:", error);
+            alert(error.message || "서버와 연결할 수 없습니다.");
+        }
+    }
+
+    function updateScorePreview() {
+        if (!currentScores) return;
+
+        const myPlayerIdx = roomPlayers.indexOf(myUserId);
+        if (myPlayerIdx === -1) return;
+
+        const inputCells = document.querySelectorAll(`.input-cell[data-player-idx="${myPlayerIdx}"]`);
+        inputCells.forEach(cell => {
+            if (cell.classList.contains('fixed')) return;
 
             const scoreType = cell.getAttribute('data-score-type');
-            if (!scoreType || currentScores[scoreType] === undefined) return;
+            if (scoreType && currentScores[scoreType] !== undefined) {
+                cell.innerText = currentScores[scoreType];
+                cell.style.color = '#888';
+            }
+        });
+    }
+
+    async function selectScore(cell) {
+        if (!isRolled || cell.classList.contains('fixed') || isGameOver) return;
+
+        const cellPlayerIdx = parseInt(cell.getAttribute('data-player-idx'), 10);
+        const myPlayerIdx = roomPlayers.indexOf(myUserId);
+        if (cellPlayerIdx !== myPlayerIdx) {
+            alert("본인의 점수 칸만 선택할 수 있습니다.");
+            return;
+        }
+
+        const scoreType = cell.getAttribute('data-score-type');
+        if (!scoreType || currentScores[scoreType] === undefined) return;
+
+        try {
+            const response = await fetch('/api/select-score', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                body: JSON.stringify({
+                    room_id: roomId,
+                    score_type: scoreType,
+                    score_value: currentScores[scoreType]
+                })
+            });
+
+            if (!response.ok) {
+                const errData = await response.json().catch(() => ({}));
+                throw new Error(errData.message || '점수 저장에 실패했습니다.');
+            }
+
+            const data = await response.json();
 
             cell.innerText = currentScores[scoreType];
             cell.style.color = '#000';
@@ -269,20 +442,40 @@
 
             const inputCells = document.querySelectorAll('.input-cell');
             inputCells.forEach(c => {
-                if (!c.classList.contains('fixed')) {
-                    c.innerText = '';
-                }
+                if (!c.classList.contains('fixed')) c.innerText = '';
             });
+
+            updateTotals();
 
             isRolled = false;
             currentScores = null;
+            rollCount = 0;
+            document.getElementById('roll-count-display').innerText = `0/3`;
             holdStatus = [false, false, false, false, false];
 
-            document.querySelectorAll('.hole-button').forEach(btn => {
-                btn.classList.remove('active');
-            });
+            document.querySelectorAll('.hole-button').forEach(btn => btn.classList.remove('active'));
+
+            if (data.status === 'finished') {
+                if (!isGameOver) {
+                    isGameOver = true;
+                    handleGameOver(data.winner);
+                }
+                return;
+            }
+
+            if (data.next_turn) {
+                currentTurn = data.next_turn;
+                document.getElementById('turn-display').innerText = `${data.next_turn}`;
+            }
+
+            await fetchGameState();
+
+        } catch (error) {
+            console.error("점수 선택 실패:", error);
+            alert(error.message || "서버와 연결할 수 없습니다.");
         }
-    </script>
+    }
+</script>
 </body>
 
 </html>
