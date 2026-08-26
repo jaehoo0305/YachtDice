@@ -1,11 +1,10 @@
 <!DOCTYPE html>
-<html lang="ko">
-
-<head>
+<html lang="ko"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yacht Dice</title>
-    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='LobbyStyle.css') }}"> -->
+
     <style>
         html,
         body {
@@ -18,135 +17,532 @@
 
         .mainBox-ingame {
             background-color: #959595;
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-
             width: 100vw;
             height: 100vh;
 
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
-        }
-
-        .roll-button {
-            width: 30%;
-            padding: 3px;
-            border: none;
-            border-radius: 9999px;
-            margin-top: auto;
-            background-color: #638FFF;
-            font-size: 20px;
-            color: #FFFFFF;
-            outline: none;
-            cursor: pointer;
-
-            &:hover {
-                background-color: #4A6ED1;
-                transform: scale(1.025);
-            }
-
-            &:active {
-                background-color: #4ad16e;
-                transform: scale(0.975);
-            }
         }
 
         .subbox {
             width: 1000px;
             height: 600px;
+
+            display: flex;
+            gap: 40px;
+            align-items: flex-start;
+        }
+
+        .scorecard {
+            width: 320px;
+            background-color: #d1d1d1;
+            border: 4px solid #333;
+            padding: 8px;
+            font-family: Arial, sans-serif;
+            box-sizing: border-box;
+            flex-shrink: 0;
+        }
+
+        .score-row {
+            display: grid;
+            grid-template-columns: 1.4fr 1fr 1fr;
+
+            border: 2px solid #333;
+            margin-bottom: -2px;
+        }
+
+        .cell {
+            background-color: #fff;
+            border-right: 2px solid #333;
+
+            padding: 8px 4px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 14px;
+            font-weight: bold;
+            color: #111;
+
+            box-sizing: border-box;
+        }
+
+        .cell:last-child {
+            border-right: none;
+        }
+
+        .header-row {
+            background-color: #e2e2e2;
+        }
+
+        .turn-cell {
+            background-color: #e2e2e2;
+
+            align-items: flex-start;
+            flex-direction: column;
+
+            padding-left: 8px;
+        }
+
+        .turn-label {
+            font-size: 16px;
+            font-weight: normal;
+        }
+
+        .turn-value {
+            font-size: 24px;
+            font-weight: bold;
+            line-height: 1.1;
+        }
+
+        .player-header {
+            background-color: #e2e2e2;
+        }
+
+        .label-cell {
+            justify-content: center;
+            align-items: flex-start;
+
+            padding-left: 10px;
+            font-size: 13px;
+        }
+
+        .score-row:nth-child(8) {
+            border-bottom: 2px dashed #333;
+        }
+
+        .gap-row {
+            margin-top: 10px;
+        }
+
+        .total-row {
+            margin-top: 10px;
+            background-color: #fff;
+        }
+
+        .total-label {
+            font-size: 18px;
+        }
+
+        .box-score {
+            border: 2px solid #333;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .game-area {
+            width: 500px;
+            height: 600px;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .title-box {
+            width: 100%;
+            text-align: center;
+        }
+
+        .title-box h1 {
+            margin: 0 0 30px 0;
+            font-size: 40px;
+        }
+
+        .roll-button {
+            width: 200px;
+            padding: 10px;
+
+            border: none;
+            border-radius: 9999px;
+
+            background-color: #638FFF;
+
+            font-size: 20px;
+            color: #fff;
+
+            outline: none;
+            cursor: pointer;
+
+            transition:
+                background-color 0.2s ease,
+                transform 0.1s ease;
+        }
+
+        .roll-button:hover {
+            background-color: #4A6ED1;
+            transform: scale(1.025);
+        }
+
+        .roll-button:active {
+            background-color: #4ad16e;
+            transform: scale(0.975);
+        }
+
+        .dice-area {
+            width: 100%;
+            margin-top: 50px;
+
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .dice-row {
+            display: flex;
+            align-items: center;
+            gap: 15px;
         }
 
         .hole-button {
+            width: 70px;
+
             background-color: #638FFF;
             color: #09000c;
+
             border: 0;
             padding: 6px 12px;
+
             border-radius: 9999px;
+
             cursor: pointer;
-            transition: background-color 0.2s ease, color 0.2s ease;
+
+            transition:
+                background-color 0.2s ease,
+                color 0.2s ease;
+        }
+
+        .hole-button:hover {
+            background-color: #4A6ED1;
+            color: white;
         }
 
         .hole-button.active {
             background-color: #FF6363;
             color: #09000c;
-            border-color: #a53c3c;
             font-weight: bold;
+        }
+
+        .dice-row h3 {
+            margin: 0;
+        }
+
+        .dice-value {
+            display: inline-flex;
+
+            width: 35px;
+            height: 35px;
+
+            justify-content: center;
+            align-items: center;
+
+            background-color: white;
+
+            border: 2px solid #333;
+            border-radius: 8px;
+
+            font-size: 20px;
         }
     </style>
 </head>
 
 <body class="mainBox-ingame">
+
     <div class="subbox">
-        <div>
-            <h1>Yacht Dice</h1>
-            <button type="button" class="roll-button" onclick="rollDice()">주사위 굴리기</button>
+
+        <!-- 점수판 -->
+
+        <div class="scorecard">
+
+            <div class="score-row header-row">
+                <div class="cell turn-cell">
+                    <span class="turn-label">Turn</span>
+                    <span class="turn-value">1/12</span>
+                </div>
+
+                <div class="cell player-header">
+                    플레이어 1
+                </div>
+
+                <div class="cell player-header">
+                    플레이어 2
+                </div>
+            </div>
+
+            <div class="score-row">
+                <div class="cell label-cell">⚀ Aces</div>
+                <div class="cell input-cell"></div>
+                <div class="cell input-cell"></div>
+            </div>
+
+            <div class="score-row">
+                <div class="cell label-cell">⚁ Deuces</div>
+                <div class="cell input-cell"></div>
+                <div class="cell input-cell"></div>
+            </div>
+
+            <div class="score-row">
+                <div class="cell label-cell">⚂ Threes</div>
+                <div class="cell input-cell"></div>
+                <div class="cell input-cell"></div>
+            </div>
+
+            <div class="score-row">
+                <div class="cell label-cell">⚃ Fours</div>
+                <div class="cell input-cell"></div>
+                <div class="cell input-cell"></div>
+            </div>
+
+            <div class="score-row">
+                <div class="cell label-cell">⚄ Fives</div>
+                <div class="cell input-cell"></div>
+                <div class="cell input-cell"></div>
+            </div>
+
+            <div class="score-row">
+                <div class="cell label-cell">⚅ Sixes</div>
+                <div class="cell input-cell"></div>
+                <div class="cell input-cell"></div>
+            </div>
+
+            <div class="score-row">
+                <div class="cell label-cell">Subtotal</div>
+                <div class="cell score-val">0/63</div>
+                <div class="cell score-val">0/63</div>
+            </div>
+
+            <div class="score-row bonus-row">
+                <div class="cell label-cell">+35 Bonus</div>
+                <div class="cell input-cell"></div>
+                <div class="cell input-cell"></div>
+            </div>
+
+            <div class="score-row gap-row">
+                <div class="cell label-cell">Choice</div>
+                <div class="cell input-cell"></div>
+                <div class="cell input-cell"></div>
+            </div>
+
+            <div class="score-row">
+                <div class="cell label-cell">4 of a kind</div>
+                <div class="cell input-cell"></div>
+                <div class="cell input-cell"></div>
+            </div>
+
+            <div class="score-row">
+                <div class="cell label-cell">Full House</div>
+                <div class="cell input-cell"></div>
+                <div class="cell input-cell"></div>
+            </div>
+
+            <div class="score-row">
+                <div class="cell label-cell">S. Straight</div>
+                <div class="cell input-cell"></div>
+                <div class="cell input-cell"></div>
+            </div>
+
+            <div class="score-row">
+                <div class="cell label-cell">L. Straight</div>
+                <div class="cell input-cell"></div>
+                <div class="cell input-cell"></div>
+            </div>
+
+            <div class="score-row">
+                <div class="cell label-cell">Yacht</div>
+                <div class="cell input-cell"></div>
+                <div class="cell input-cell"></div>
+            </div>
+
+            <div class="score-row total-row">
+                <div class="cell label-cell total-label">
+                    Total
+                </div>
+
+                <div class="cell score-val">
+                    <span class="box-score">0</span>
+                </div>
+
+                <div class="cell score-val">
+                    <span class="box-score">0</span>
+                </div>
+            </div>
+
         </div>
 
-        <div>
-            <button type="button" class="hole-button" onclick="hold(1)">홀드</button>
-            <h3>주사위 결과 1: <span id="dice-result1">0</span></h3>
-            <button type="button" class="hole-button" onclick="hold(2)">홀드</button>
-            <h3>주사위 결과 2: <span id="dice-result2">0</span></h3>
-            <button type="button" class="hole-button" onclick="hold(3)">홀드</button>
-            <h3>주사위 결과 3: <span id="dice-result3">0</span></h3>
-            <button type="button" class="hole-button" onclick="hold(4)">홀드</button>
-            <h3>주사위 결과 4: <span id="dice-result4">0</span></h3>
-            <button type="button" class="hole-button" onclick="hold(5)">홀드</button>
-            <h3>주사위 결과 5: <span id="dice-result5">0</span></h3>
+
+        <!-- 게임로직 -->
+        <div class="game-area">
+
+            <div class="title-box">
+                <h1>Yacht Dice</h1>
+
+                <button type="button" class="roll-button" onclick="rollDice()">
+                    주사위 굴리기
+                </button>
+            </div>
+
+
+            <div class="dice-area">
+
+                <div class="dice-row">
+                    <button type="button" class="hole-button" onclick="hold(1, this)">
+                        홀드
+                    </button>
+
+                    <h3>
+                        주사위 결과 1:
+                        <span id="dice-result1" class="dice-value">0</span>
+                    </h3>
+                </div>
+
+
+                <div class="dice-row">
+                    <button type="button" class="hole-button" onclick="hold(2, this)">
+                        홀드
+                    </button>
+
+                    <h3>
+                        주사위 결과 2:
+                        <span id="dice-result2" class="dice-value">0</span>
+                    </h3>
+                </div>
+
+
+                <div class="dice-row">
+                    <button type="button" class="hole-button" onclick="hold(3, this)">
+                        홀드
+                    </button>
+
+                    <h3>
+                        주사위 결과 3:
+                        <span id="dice-result3" class="dice-value">0</span>
+                    </h3>
+                </div>
+
+
+                <div class="dice-row">
+                    <button type="button" class="hole-button" onclick="hold(4, this)">
+                        홀드
+                    </button>
+
+                    <h3>
+                        주사위 결과 4:
+                        <span id="dice-result4" class="dice-value">0</span>
+                    </h3>
+                </div>
+
+
+                <div class="dice-row">
+                    <button type="button" class="hole-button" onclick="hold(5, this)">
+                        홀드
+                    </button>
+
+                    <h3>
+                        주사위 결과 5:
+                        <span id="dice-result5" class="dice-value">0</span>
+                    </h3>
+                </div>
+
+            </div>
+
         </div>
+
     </div>
 
+
     <script>
+
         let holdStatus = [false, false, false, false, false];
 
-        function hold(diceIndex) {
-            let index = diceIndex - 1;
+
+        // 홀드
+        function hold(diceIndex, button) {
+
+            const index = diceIndex - 1;
 
             holdStatus[index] = !holdStatus[index];
 
-            const btn = event.target;
-            btn.classList.toggle('active', holdStatus[index]);
+            button.classList.toggle(
+                "active",
+                holdStatus[index]
+            );
         }
 
+
+        // 주사위 굴리기
         async function rollDice() {
-            let headersList = {
-                "Accept": "*/*",
-                "User-Agent": "Thunder Client (https://www.thunderclient.com)",
-                "Content-Type": "application/json"
-            };
 
-            let dicelist = [];
+            const dicelist = [];
+
             for (let i = 1; i <= 5; i++) {
-                const element = document.getElementById(`dice-result${i}`);
-                if (element) {
-                    dicelist.push({
-                        "val": element.innerText,
-                        "hold": holdStatus[i - 1]
-                    });
-                }
+
+                const element =
+                    document.getElementById(`dice-result${i}`);
+
+                dicelist.push({
+                    val: Number(element.innerText),
+                    hold: holdStatus[i - 1]
+                });
             }
 
-            let bodyContent = JSON.stringify({
-                "dicelist": dicelist
-            });
 
-            let response = await fetch("http://localhost:5000/api/roll", {
-                method: "POST",
-                body: bodyContent,
-                headers: headersList
-            });
+            try {
 
-            let data = await response.json();
-            console.log(data);
+                const response = await fetch(
+                    "http://localhost:5000/api/roll",
+                    {
+                        method: "POST",
 
-            for (let i = 0; i < 5; i++) {
-                document.getElementById(`dice-result${i + 1}`).innerText = data.dicelist[i].val;
+                        headers: {
+                            "Accept": "application/json",
+                            "Content-Type": "application/json"
+                        },
+
+                        body: JSON.stringify({
+                            dicelist: dicelist
+                        })
+                    }
+                );
+
+
+                if (!response.ok) {
+                    throw new Error(
+                        `HTTP error: ${response.status}`
+                    );
+                }
+
+
+                const data = await response.json();
+
+                console.log(data);
+
+
+                for (let i = 0; i < 5; i++) {
+
+                    document.getElementById(
+                        `dice-result${i + 1}`
+                    ).innerText =
+                        data.dicelist[i].val;
+                }
+
+            } catch (error) {
+
+                console.error(
+                    "주사위 굴리기 실패:",
+                    error
+                );
+
+                alert(
+                    "서버와 연결할 수 없습니다."
+                );
             }
         }
-    </script>
-</body>
 
-</html>
+    </script>
+
+
+
+</body></html>
