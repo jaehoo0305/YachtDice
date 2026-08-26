@@ -213,14 +213,6 @@ body
   color: #000000;
 }
 
-.tutorial-divider
-{
-  width: 200px;
-  height: 2px;
-  border-radius: 2px;
-  background-color: #638FFF;
-}
-
 /* Modal */
 
 .modal-overlay
