@@ -26,8 +26,8 @@
           {% for r in records %}
           <div class="record-btn">
             <div class="record-info">
-              <span class="record-date">{{ r.date }}</span>
-              <span class="record-opponent">vs {{ r.opponent }}</span>
+              <span class="record-date">{{ r.date }},</span>
+              <span class="record-opponent">{{ username }} vs {{ r.opponent }},</span>
               <span class="record-match">{{ r.score_text }}</span>
             </div>
             <span class="record-result {{ r.result_class }}">{{ r.result_text }}</span>

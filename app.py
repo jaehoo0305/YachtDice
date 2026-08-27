@@ -103,7 +103,7 @@ def room():
         winner = m.get('winner')
         created_at = m.get('created_at')
         
-        date_str = created_at.strftime('%m/%d %H:%M') if isinstance(created_at, datetime.datetime) else '최근'
+        date_str = created_at.strftime('%Y/%m/%d') if isinstance(created_at, datetime.datetime) else '최근'
         my_score = scores.get(user_id, 0)
         
         opponent_list = [p for p in players if p != user_id]
